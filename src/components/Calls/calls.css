@@ -1,0 +1,212 @@
+.calls {
+    display: flex;
+}
+
+.calls-header {
+    max-width: calc(100vw - 260px);
+    width: 100%;
+    max-height: 64px;
+    padding: 14px 120px;
+    box-shadow: 0px 4px 5px 0px #e9edf3;
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    top: 0;
+    left: 240px;
+}
+
+.calls-header__info-container {
+    display: flex;
+}
+
+.calls-header__date {
+    padding: 7px 86px 0 0;
+    color: var(--text-header, #899cb1);
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 148%;
+}
+
+.calls-header__calls-info {
+    display: flex;
+    gap: 56px;
+}
+
+.calls-header__calls-info-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.calls-header__calls-info-item-text {
+    color: var(--text, #122945);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 148%;
+}
+
+span[data-color='green'] {
+    color: var(--text-green, #00a775);
+}
+
+span[data-color='yellow'] {
+    color: #ffb800;
+}
+
+span[data-color='red'] {
+    color: var(--ui-red, #ea1a4f);
+}
+
+.calls-header__calls-info-item-scale {
+    display: flex;
+    gap: 0;
+}
+
+.calls-table__header-item-employee-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}
+
+hr[data-color='green'] {
+    display: inline-block;
+    width: 68px;
+    height: 6px;
+    border: none;
+    border-radius: 12px 0px 0px 12px;
+    background: #28a879;
+}
+
+hr[data-color='green-end'] {
+    display: inline-block;
+    border: none;
+    width: 88px;
+    height: 6px;
+    border-radius: 0px 12px 12px 0px;
+    background: #dee6f5;
+}
+
+hr[data-color='yellow'] {
+    display: inline-block;
+    width: 67px;
+    height: 6px;
+    border: none;
+    border-radius: 12px 0px 0px 12px;
+    background: #ffd500;
+}
+
+hr[data-color='yellow-end'] {
+    display: inline-block;
+    border: none;
+    width: 89px;
+    height: 6px;
+    border-radius: 0px 12px 12px 0px;
+    background: #dee6f5;
+}
+
+hr[data-color='red'] {
+    display: inline-block;
+    width: 78px;
+    height: 6px;
+    border: none;
+    border-radius: 12px 0px 0px 12px;
+    background: var(--ui-red, #ea1a4f);
+}
+
+hr[data-color='red-end'] {
+    display: inline-block;
+    border: none;
+    width: 78px;
+    height: 6px;
+    border-radius: 0px 12px 12px 0px;
+    background: #dee6f5;
+}
+
+.calls-header__user-container {
+    display: flex;
+    align-items: center;
+}
+
+.calls-header__user-container-search-btn {
+    background: transparent;
+    border: none;
+    width: 32px;
+    height: 48px;
+    margin-right: 56px;
+}
+
+.calls-header__user-container-search-btn:hover {
+    cursor: pointer;
+}
+
+.calls-header__user-container-search-btn-img {
+    width: 32px;
+    height: 48px;
+}
+
+.calls-header__user-container-select {
+    background: transparent;
+    border: none;
+    color: #899cb1;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 140%;
+    appearance: none;
+    min-width: 290px;
+}
+
+.calls-header__user-container-select:hover {
+    cursor: pointer;
+}
+
+.calls-header__user-container-select-wrapper {
+    position: relative;
+    margin-right: 41px;
+}
+
+.calls-header__user-container-select-wrapper::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: -2px;
+    pointer-events: none;
+    width: 24px;
+    height: 24px;
+    background-image: url(../../images/keyboard_arrow_down_black_24dp\ 1.svg);
+    background-position: center;
+    background-size: 24px 24px;
+    background-repeat: no-repeat;
+}
+
+.calls-header__user-container-profile-btn {
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+    border: none;
+}
+
+.calls-header__user-container-profile-btn:hover {
+    cursor: pointer;
+}
+
+.calls-section {
+    margin-top: 64px;
+    background-color: #f1f4f9;
+    width: 100%;
+    padding: 28px 120px;
+}
+
+.calls-section__buttons-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 48px;
+}
+
+@media (width < 1584px) {
+    .calls-header {
+        display: none;
+    }
+
+    .calls-section {
+        margin-top: 0;
+    }
+}

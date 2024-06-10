@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+    @apply m-0 p-0 box-border font-sans;
+}
+
+a {
+    @apply no-underline;
+}
+
+ul {
+    @apply list-none;
+}
+
+li {
+    @apply m-0 p-0;
+}
