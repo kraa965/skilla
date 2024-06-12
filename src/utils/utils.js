@@ -12,7 +12,7 @@ export const getFormatDate = (date) => {
   return str[0].toUpperCase() + str.slice(1);
 };
 
-export const getHoursMins = (date) => {
+export const getHoursMin = (date) => {
   const separate = date.split(' ');
   const res = separate[1].split(':');
   return res[0] + ':' + res[1];
@@ -55,9 +55,7 @@ export const getYearsDates = (date) => {
   const endDay = new Date(year, 12, 0).getDate();
 
   return {
-    start: new Date(`${year}-${startMonth}-${startDay}`).toLocaleString(
-      'en-ca'
-    ),
+    start: new Date(`${year}-${startMonth}-${startDay}`).toLocaleString('en-ca'),
     end: new Date(`${year}-${endMonth}-${endDay}`).toLocaleString('en-ca'),
   };
 };

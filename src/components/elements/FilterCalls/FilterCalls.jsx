@@ -33,7 +33,7 @@ function FilterCalls({ types }) {
 
   return (
     <div className="filter-calls__container">
-      <div className="filter-calls__filters-container">
+      <div>
         <ul className="filter-calls__filters-list">
           <li className="filter-calls__filters-list-item" onClick={handleOpenTypes}>
             <button className="filter-calls__filters-list-button">{currentType}</button>

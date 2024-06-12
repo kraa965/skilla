@@ -101,9 +101,6 @@ function Calls() {
     }
   }, [days, callsFilter]);
 
-  console.log(callsFilter);
-  console.log(calls);
-
   return (
     <main>
       <section className="mx-auto px-[240px] mt-20">
