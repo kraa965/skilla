@@ -1,3 +1,5 @@
+import { format } from 'date-fns';
+
 const addZero = (str) => {
   if (str.length < 2) return '0' + str;
   return str;
@@ -57,5 +59,23 @@ export const getYearsDates = (date) => {
   return {
     start: new Date(`${year}-${startMonth}-${startDay}`).toLocaleString('en-ca'),
     end: new Date(`${year}-${endMonth}-${endDay}`).toLocaleString('en-ca'),
+  };
+};
+
+export const getCustomDates = (startDate, endDate) => {
+  const formatDate = (date) => {
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  const start = formatDate(startDate);
+  const end = formatDate(endDate);
+
+  return {
+    start,
+    end,
   };
 };

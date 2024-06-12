@@ -73,16 +73,6 @@ function CallsTable({ data, loading }) {
       const timeA = new Date(a.date);
       const timeB = new Date(b.date);
       return sortOrder === 'asc' ? timeA - timeB : timeB - timeA;
-    } else if (sortBy === 'duration') {
-      const durationA = Number(a.duration);
-      const durationB = Number(b.duration);
-
-      // Sorting from largest to smallest or vice versa based on sortOrder
-      if (sortOrder === 'asc') {
-        return durationB - durationA;
-      } else {
-        return durationA - durationB;
-      }
     } else {
       return 0;
     }
@@ -120,12 +110,7 @@ function CallsTable({ data, loading }) {
               <th className="py-3 px-4 text-gray-400 font-medium border-b">Звонок</th>
               <th className="py-3 px-4 text-gray-400 font-medium border-b">Источник</th>
               <th className="py-3 px-4 text-gray-400 font-medium border-b">Оценка</th>
-              <th
-                className="py-3 px-4 text-gray-400 font-medium border-b cursor-pointer"
-                onClick={() => handleSort('duration')}
-              >
-                Длительность {getSortArrow('duration')}
-              </th>
+              <th className="py-3 px-4 text-gray-400 font-medium border-b cursor-pointer">Длительность</th>
             </tr>
           </thead>
           <tbody>

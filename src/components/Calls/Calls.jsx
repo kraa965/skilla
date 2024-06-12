@@ -1,5 +1,5 @@
-import { getDaysDates, getMonthDates, getYearsDates } from '../../utils/utils';
-import DatePicker from '../elements/DatePicker/DatePicker';
+import { getDaysDates, getMonthDates, getYearsDates, getCustomDates } from '../../utils/utils';
+import CustomDatePicker from '../elements/DatePicker/CustomDatePicker';
 import FilterCalls from '../elements/FilterCalls/FilterCalls';
 import CallsTable from '../elements/CallsTable/CallsTable';
 import { useEffect, useState } from 'react';
@@ -11,6 +11,8 @@ function Calls() {
   const [days, setDays] = useState(2);
   const [callsFilter, setCallsFilter] = useState('');
   const [currentFilter, setCurrentFilter] = useState('');
+  const [customStartDate, setCustomStartDate] = useState(null);
+  const [customEndDate, setCustomEndDate] = useState(null);
 
   async function getData(filter) {
     try {
@@ -28,57 +30,52 @@ function Calls() {
   function filterDays(days) {
     const dates = getDaysDates(new Date(), days);
     const { start, end } = dates;
-    const started = start.split(',');
-    const ended = end.split(',');
-    getData(`date_start=${started[0]}&date_end=${ended[0]}&limit=10000${callsFilter}`);
+    getData(`date_start=${start}&date_end=${end}&limit=10000${callsFilter}`);
   }
 
   function filterWeek() {
     const dates = getDaysDates(new Date(), 6);
     const { start, end } = dates;
-    const started = start.split(',');
-    const ended = end.split(',');
-    getData(`date_start=${started[0]}&date_end=${ended[0]}&limit=10000${callsFilter}`);
+    getData(`date_start=${start}&date_end=${end}&limit=10000${callsFilter}`);
     setCurrentFilter('week');
   }
 
   function filterMonth() {
     const dates = getMonthDates(new Date());
     const { start, end } = dates;
-    const started = start.split(',');
-    const ended = end.split(',');
-    getData(`date_start=${started[0]}&date_end=${ended[0]}&limit=10000${callsFilter}`);
+    getData(`date_start=${start}&date_end=${end}&limit=10000${callsFilter}`);
     setCurrentFilter('month');
   }
 
   function filterYear() {
     const dates = getYearsDates(new Date());
     const { start, end } = dates;
-    const started = start.split(',');
-    const ended = end.split(',');
-    getData(`date_start=${started[0]}&date_end=${ended[0]}&limit=10000${callsFilter}`);
+    getData(`date_start=${start}&date_end=${end}&limit=10000${callsFilter}`);
     setCurrentFilter('year');
+  }
+
+  function filterCustomPeriod(start, end) {
+    const dates = getCustomDates(start, end);
+    const { start: formattedStart, end: formattedEnd } = dates;
+    getData(`date_start=${formattedStart}&date_end=${formattedEnd}&limit=10000${callsFilter}`);
   }
 
   function prevDays() {
     if (days) {
       setDays(days - 1);
-      filterDays(days);
+      filterDays(days - 1); // Передаем корректное значение для дней
     }
   }
 
   function nextDays() {
     setDays(days + 1);
-    filterDays(days);
+    filterDays(days + 1); // Передаем корректное значение для дней
   }
 
   const handleType = (type) => {
-    console.log(type);
     if (type === 0) {
-      console.log('outcome');
       setCallsFilter(`&in_out=0`);
     } else if (type === 1) {
-      console.log('incoming');
       setCallsFilter('&in_out=1');
     } else {
       setCallsFilter('');
@@ -87,26 +84,24 @@ function Calls() {
 
   useEffect(() => {
     if (currentFilter === 'week') {
-      const renderData = async () => filterWeek();
-      renderData();
+      filterWeek();
     } else if (currentFilter === 'month') {
-      const renderData = async () => filterMonth();
-      renderData();
+      filterMonth();
     } else if (currentFilter === 'year') {
-      const renderData = async () => filterYear();
-      renderData();
+      filterYear();
+    } else if (customStartDate && customEndDate) {
+      filterCustomPeriod(customStartDate, customEndDate);
     } else {
-      const renderData = async () => filterDays(days);
-      renderData();
+      filterDays(days);
     }
-  }, [days, callsFilter]);
+  }, [days, callsFilter, customStartDate, customEndDate]);
 
   return (
     <main>
       <section className="mx-auto px-[240px] mt-20">
         <div className="flex justify-between gap-12">
           <FilterCalls types={handleType} />
-          <DatePicker
+          <CustomDatePicker
             days={filterDays}
             week={filterWeek}
             month={filterMonth}
@@ -114,6 +109,10 @@ function Calls() {
             prev={prevDays}
             next={nextDays}
             count={days}
+            customPeriod={(start, end) => {
+              setCustomStartDate(start);
+              setCustomEndDate(end);
+            }}
           />
         </div>
         <CallsTable data={calls} loading={isLoading} />

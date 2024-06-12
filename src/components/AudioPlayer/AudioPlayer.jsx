@@ -5,8 +5,8 @@ const AudioPlayer = ({ recordBlob, onClose }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [hoverTime, setHoverTime] = useState(null); // Added state for hover time
-  const [isHovering, setIsHovering] = useState(false); // Added state for hover state
+  const [hoverTime, setHoverTime] = useState(null);
+  const [isHovering, setIsHovering] = useState(false);
   const audioRef = useRef(null);
   const progressBarRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -42,7 +42,7 @@ const AudioPlayer = ({ recordBlob, onClose }) => {
   };
 
   const handleClose = () => {
-    setIsPlaying(false); // Stop playback when closing
+    setIsPlaying(false);
     onClose();
   };
 
@@ -77,7 +77,7 @@ const AudioPlayer = ({ recordBlob, onClose }) => {
     const offsetX = e.clientX - rect.left;
     const hoverTime = (offsetX / rect.width) * duration;
     if (!isHovering) {
-      setIsHovering(true); // Start hovering
+      setIsHovering(true);
     }
     setHoverTime(hoverTime);
   };
@@ -123,9 +123,9 @@ const AudioPlayer = ({ recordBlob, onClose }) => {
               onMouseMove={handleMouseMove}
               onMouseDown={handleMouseDown}
               onMouseUp={handleMouseUp}
-              onMouseLeave={() => setIsHovering(false)} // When leaving the progress bar, stop hovering
+              onMouseLeave={() => setIsHovering(false)}
             >
-              {isHovering && ( // Show hover time only if hovering
+              {isHovering && (
                 <div className="absolute top-[-25px] left-[50%] transform -translate-x-1/2 text-black rounded">
                   {formatTime(hoverTime)}
                 </div>
