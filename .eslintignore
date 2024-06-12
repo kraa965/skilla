@@ -1,0 +1,10 @@
+.vscode
+.idea
+.husky
+public
+dist
+
+package.json
+package-lock.json
+.env
+.env.example

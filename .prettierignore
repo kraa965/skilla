@@ -1,0 +1,10 @@
+.idea
+.husky
+node_modules
+dist
+
+package-lock.json
+.env
+.env.example
+
+public

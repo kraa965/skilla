@@ -5,10 +5,12 @@ const AudioPlayer = ({ recordBlob, onClose }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [hoverTime, setHoverTime] = useState(null); // Added state for hover time
+  const [isHovering, setIsHovering] = useState(false); // Added state for hover state
   const audioRef = useRef(null);
   const progressBarRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
-  
+
   useEffect(() => {
     if (recordBlob) {
       const url = URL.createObjectURL(recordBlob);
@@ -18,7 +20,7 @@ const AudioPlayer = ({ recordBlob, onClose }) => {
       };
     }
   }, [recordBlob]);
-  
+
   const togglePlay = () => {
     const audioElement = audioRef.current;
     if (!isPlaying) {
@@ -28,22 +30,22 @@ const AudioPlayer = ({ recordBlob, onClose }) => {
     }
     setIsPlaying(!isPlaying);
   };
-  
+
   const handleTimeUpdate = (e) => {
     if (!isDragging) {
       setCurrentTime(e.target.currentTime);
     }
   };
-  
+
   const handleLoadedMetadata = (e) => {
     setDuration(e.target.duration);
   };
-  
+
   const handleClose = () => {
     setIsPlaying(false); // Stop playback when closing
     onClose();
   };
-  
+
   const handleProgressClick = (e) => {
     const progressBar = progressBarRef.current;
     const rect = progressBar.getBoundingClientRect();
@@ -52,15 +54,15 @@ const AudioPlayer = ({ recordBlob, onClose }) => {
     audioRef.current.currentTime = newTime;
     setCurrentTime(newTime);
   };
-  
+
   const handleMouseDown = () => {
     setIsDragging(true);
   };
-  
+
   const handleMouseUp = () => {
     setIsDragging(false);
   };
-  
+
   const handleMouseMove = (e) => {
     if (isDragging) {
       const progressBar = progressBarRef.current;
@@ -68,24 +70,34 @@ const AudioPlayer = ({ recordBlob, onClose }) => {
       const offsetX = e.clientX - rect.left;
       const newTime = Math.min(
         Math.max((offsetX / rect.width) * duration, 0),
-        duration
+        duration,
       );
       audioRef.current.currentTime = newTime;
       setCurrentTime(newTime);
     }
+    const progressBar = progressBarRef.current;
+    const rect = progressBar.getBoundingClientRect();
+    const offsetX = e.clientX - rect.left;
+    const hoverTime = (offsetX / rect.width) * duration;
+    if (!isHovering) {
+      setIsHovering(true); // Start hovering
+    }
+    setHoverTime(hoverTime);
   };
-  
+
   function formatTime(time) {
     const minutes = Math.floor(time / 60);
     const seconds = Math.floor(time % 60);
     return `${minutes < 10 ? "0" : ""}${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
   }
-  
+
   return (
     <div className="bg-[#EAF0FA] rounded-3xl flex items-center px-5 py-3 w-[352px]">
       {recordUrl && (
         <>
-          <span className="text-gray-800 mr-3 text-[15px]">{formatTime(currentTime)}</span>
+          <span className="text-gray-800 mr-3 text-[15px]">
+            {formatTime(currentTime)}
+          </span>
           <audio
             ref={audioRef}
             src={recordUrl}
@@ -133,16 +145,19 @@ const AudioPlayer = ({ recordBlob, onClose }) => {
               onMouseMove={handleMouseMove}
               onMouseDown={handleMouseDown}
               onMouseUp={handleMouseUp}
+              onMouseLeave={() => setIsHovering(false)} // When leaving the progress bar, stop hovering
             >
+              {isHovering && ( // Show hover time only if hovering
+                <div className="absolute top-[-25px] left-[50%] transform -translate-x-1/2 text-black rounded">
+                  {formatTime(hoverTime)}
+                </div>
+              )}
+              <div className="h-2 bg-gray-500 rounded-lg absolute w-[164px] -top-1"></div>
               <div
-                className="h-2 bg-gray-500 rounded-lg absolute w-[164px] -top-1"
-                
-              ></div>
-              <div
-                className="h-2 bg-purple-600 rounded-lg absolute"
+                className="h-2 bg-purple-600 rounded-lg absolute -top-[4px]"
                 style={{
                   width: `${(currentTime / duration) * 100}%`,
-                  zIndex: 1
+                  zIndex: 1,
                 }}
               ></div>
               <div
@@ -150,7 +165,7 @@ const AudioPlayer = ({ recordBlob, onClose }) => {
                 style={{
                   left: `${(currentTime / duration) * 100}%`,
                   transform: "translateX(-50%)",
-                  zIndex: 2
+                  zIndex: 2,
                 }}
               ></div>
             </div>
