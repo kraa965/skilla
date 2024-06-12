@@ -1,5 +1,4 @@
-import "./App.css";
-import Calls from "./components/Calls/Calls.jsx";
+import Calls from './components/Calls/Calls.jsx';
 
 function App() {
   return (
