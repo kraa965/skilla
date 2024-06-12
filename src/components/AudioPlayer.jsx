@@ -8,7 +8,7 @@ const AudioPlayer = ({ recordBlob, onClose }) => {
   const audioRef = useRef(null);
   const progressBarRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
-
+  
   useEffect(() => {
     if (recordBlob) {
       const url = URL.createObjectURL(recordBlob);
@@ -18,7 +18,7 @@ const AudioPlayer = ({ recordBlob, onClose }) => {
       };
     }
   }, [recordBlob]);
-
+  
   const togglePlay = () => {
     const audioElement = audioRef.current;
     if (!isPlaying) {
@@ -28,22 +28,22 @@ const AudioPlayer = ({ recordBlob, onClose }) => {
     }
     setIsPlaying(!isPlaying);
   };
-
+  
   const handleTimeUpdate = (e) => {
     if (!isDragging) {
       setCurrentTime(e.target.currentTime);
     }
   };
-
+  
   const handleLoadedMetadata = (e) => {
     setDuration(e.target.duration);
   };
-
+  
   const handleClose = () => {
     setIsPlaying(false); // Stop playback when closing
     onClose();
   };
-
+  
   const handleProgressClick = (e) => {
     const progressBar = progressBarRef.current;
     const rect = progressBar.getBoundingClientRect();
@@ -52,15 +52,15 @@ const AudioPlayer = ({ recordBlob, onClose }) => {
     audioRef.current.currentTime = newTime;
     setCurrentTime(newTime);
   };
-
+  
   const handleMouseDown = () => {
     setIsDragging(true);
   };
-
+  
   const handleMouseUp = () => {
     setIsDragging(false);
   };
-
+  
   const handleMouseMove = (e) => {
     if (isDragging) {
       const progressBar = progressBarRef.current;
@@ -68,33 +68,33 @@ const AudioPlayer = ({ recordBlob, onClose }) => {
       const offsetX = e.clientX - rect.left;
       const newTime = Math.min(
         Math.max((offsetX / rect.width) * duration, 0),
-        duration,
+        duration
       );
       audioRef.current.currentTime = newTime;
       setCurrentTime(newTime);
     }
   };
-
+  
   function formatTime(time) {
     const minutes = Math.floor(time / 60);
     const seconds = Math.floor(time % 60);
     return `${minutes < 10 ? "0" : ""}${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
   }
-
+  
   return (
-    <div className="bg-[#EAF0FA] rounded-3xl flex items-center px-5 py-3 w-full">
+    <div className="bg-[#EAF0FA] rounded-3xl flex items-center px-5 py-3 w-[352px]">
       {recordUrl && (
         <>
-          <span className="text-gray-800 mr-3">{formatTime(currentTime)}</span>
+          <span className="text-gray-800 mr-3 text-[15px]">{formatTime(currentTime)}</span>
           <audio
             ref={audioRef}
             src={recordUrl}
             onTimeUpdate={handleTimeUpdate}
             onLoadedMetadata={handleLoadedMetadata}
           ></audio>
-          <div className="flex items-center gap-5 w-full">
+          <div className="flex items-center w-full">
             <button onClick={togglePlay} className="focus:outline-none">
-              <div className="w-10 h-10 flex items-center justify-center bg-white rounded-full shadow-lg">
+              <div className="w-6 h-6 flex items-center justify-center bg-white rounded-full shadow-lg">
                 {isPlaying ? (
                   <svg
                     width="8"
@@ -128,22 +128,29 @@ const AudioPlayer = ({ recordBlob, onClose }) => {
             </button>
             <div
               ref={progressBarRef}
-              className="w-full bg-gray-500 rounded-lg relative cursor-pointer"
+              className="w-full bg-gray-500 rounded-lg relative cursor-pointer ml-5"
               onClick={handleProgressClick}
               onMouseMove={handleMouseMove}
               onMouseDown={handleMouseDown}
               onMouseUp={handleMouseUp}
             >
               <div
-                className="h-2 bg-purple-600 rounded-lg absolute"
-                style={{ width: `${(currentTime / duration) * 100}%` }}
+                className="h-2 bg-gray-500 rounded-lg absolute w-[164px] -top-1"
+                
               ></div>
               <div
-                className="w-3 h-3 bg-gray-300 rounded-full absolute"
+                className="h-2 bg-purple-600 rounded-lg absolute"
+                style={{
+                  width: `${(currentTime / duration) * 100}%`,
+                  zIndex: 1
+                }}
+              ></div>
+              <div
+                className="w-3 h-3 bg-gray-300 rounded-full absolute -top-[6px]"
                 style={{
                   left: `${(currentTime / duration) * 100}%`,
                   transform: "translateX(-50%)",
-                  top: "-0.15rem", // Adjusted to position correctly on the larger bar
+                  zIndex: 2
                 }}
               ></div>
             </div>
