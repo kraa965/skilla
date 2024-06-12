@@ -8,7 +8,7 @@ import { getCalls } from "../../utils/api";
 
 function Calls() {
   const [calls, setCalls] = useState([]);
-  const [isLoading, setIsLoading] = useState("false");
+  const [isLoading, setIsLoading] = useState(false);
   const [days, setDays] = useState(2);
   const [callsFilter, setCallsFilter] = useState("");
   const [currentFilter, setCurrentFilter] = useState("");
@@ -114,8 +114,8 @@ function Calls() {
   console.log(calls);
 
   return (
-    <main className="calls">
-      <section className="calls-section">
+    <main>
+      <section className="mx-auto px-[240px] mt-20">
         <div className="calls-section__buttons-container">
           <FilterCalls types={handleType} />
           <DatePicker
